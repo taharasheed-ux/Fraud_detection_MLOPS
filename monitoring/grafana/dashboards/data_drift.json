@@ -1,0 +1,58 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "title": "Data Drift",
+  "uid": "data-drift",
+  "panels": [
+    {
+      "title": "Data Drift Score",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        { "expr": "data_drift_score", "legendFormat": "drift score" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.2, "color": "yellow" },
+              { "value": 0.3, "color": "red" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Drift Score (Gauge)",
+      "type": "gauge",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        { "expr": "data_drift_score", "legendFormat": "drift" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.2, "color": "yellow" },
+              { "value": 0.3, "color": "red" }
+            ]
+          },
+          "min": 0, "max": 1
+        }
+      }
+    },
+    {
+      "title": "Prediction Volume Over Time",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+      "targets": [
+        { "expr": "rate(prediction_request_total{status=\"success\"}[5m])", "legendFormat": "successful req/s" }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1,
+  "time": { "from": "now-1h", "to": "now" }
+}

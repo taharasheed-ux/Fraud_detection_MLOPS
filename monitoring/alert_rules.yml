@@ -1,0 +1,49 @@
+groups:
+  - name: fraud-model-alerts
+    rules:
+      - alert: LowFraudRecall
+        expr: fraud_recall < 0.80
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Fraud recall below threshold"
+          description: "Fraud recall has dropped below 0.80 for more than 5 minutes. Current value: {{ $value }}"
+
+      - alert: HighFalsePositiveRate
+        expr: false_positive_rate > 0.20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "False positive rate too high"
+          description: "False positive rate exceeded 0.20 for more than 5 minutes. Current value: {{ $value }}"
+
+      - alert: DataDriftDetected
+        expr: data_drift_score > 0.30
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Data drift detected"
+          description: "Data drift score exceeded 0.30 for more than 10 minutes. Retraining may be needed. Current value: {{ $value }}"
+
+  - name: fraud-system-alerts
+    rules:
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(prediction_latency_seconds_bucket[5m])) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High prediction latency"
+          description: "95th percentile latency exceeded 1 second for 2 minutes."
+
+      - alert: HighErrorRate
+        expr: rate(prediction_request_total{status="error"}[5m]) / rate(prediction_request_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate in predictions"
+          description: "More than 5% of predictions are failing."

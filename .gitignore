@@ -1,0 +1,26 @@
+# Python Virtual Environment
+venv/
+.env
+
+# Data Directory (Kaggle CSVs and Parquets can be gigabytes)
+data/
+*.csv
+*.parquet
+
+# MLflow Tracking Data
+mlruns/
+mlflow.db
+
+# Model Artifacts (Saved models, pipelines, encoders)
+artifacts/
+*.joblib
+*.pkl
+
+# Logs
+pipeline.log
+*.log
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
